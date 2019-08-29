@@ -1119,14 +1119,14 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\reng\\.nuget\\packages\\": {}
+    "C:\\Users\\R2\\.nuget\\packages\\": {}
   },
   "project": {
     "restore": {
       "projectUniqueName": "REF_GetSecureHash",
       "projectName": "REF_GetSecureHash",
       "projectPath": "E:\\WorkSpace\\REF_GetSecureHash\\.local",
-      "packagesPath": "C:\\Users\\reng\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\R2\\.nuget\\packages\\",
       "outputPath": "E:\\WorkSpace\\REF_GetSecureHash\\.local"
     },
     "frameworks": {
