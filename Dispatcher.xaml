@@ -5,7 +5,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>546,2450</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>550,2074</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Dispatcher_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="22">
@@ -57,25 +57,29 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Dispatcher" sap:VirtualizedContainerService.HintSize="510,2016" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Dispatcher" sap:VirtualizedContainerService.HintSize="999,3160" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="dtWorkItems" />
-      <Variable x:TypeArguments="sd:DataTable" Name="dtWorkItem_WI5" />
-      <Variable x:TypeArguments="scg:IEnumerable(ui:QueueItem)" Name="OrchestratorQueueItems" />
-      <Variable x:TypeArguments="sd:DataTable" Name="dtWorkItem_WI5_Local" />
+      <Variable x:TypeArguments="sd:DataTable" Name="dtWorkItemWI5" />
       <Variable x:TypeArguments="x:Boolean" Name="compareFlag" />
       <Variable x:TypeArguments="scg:IEnumerable(ui:QueueItem)" Name="NewQueueItemCollection" />
       <Variable x:TypeArguments="scg:IEnumerable(ui:QueueItem)" Name="OldQueueItems" />
       <Variable x:TypeArguments="sc:IEnumerable" Name="IEnum_Except_WI5" />
-      <Variable x:TypeArguments="sd:DataTable" Name="dt_Except_WI5" />
+      <Variable x:TypeArguments="sd:DataTable" Name="dtExceptWI5" />
       <Variable x:TypeArguments="sc:IEnumerable" Name="IEnum_OldWI5" />
+      <Variable x:TypeArguments="sd:DataTable" Name="dtOrchestratorQueue" />
+      <Variable x:TypeArguments="scg:IEnumerable(sd:DataRow)" Name="IEnumExceptWI5" />
+      <Variable x:TypeArguments="x:String" Name="strExceptWI5" />
+      <Variable x:TypeArguments="x:String" Name="steWorkItemWI5" />
+      <Variable x:TypeArguments="x:String" Name="strOrchestratorQueue" />
+      <Variable x:TypeArguments="x:Boolean" Name="isDtEmpty" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="GetWorkItemData" sap:VirtualizedContainerService.HintSize="472,344" sap2010:WorkflowViewState.IdRef="BrowserScope_2" InformativeScreenshot="8851785eb06e5bb53b615cf8ae9c0b3d" Selector="&lt;html app='chrome.exe' title='ACME System 1 - Dashboard' /&gt;">
+    <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="navigate to workitem page" sap:VirtualizedContainerService.HintSize="961,344" sap2010:WorkflowViewState.IdRef="BrowserScope_2" InformativeScreenshot="8851785eb06e5bb53b615cf8ae9c0b3d" Selector="&lt;html app='chrome.exe' title='ACME System 1 - Dashboard' /&gt;">
       <ui:BrowserScope.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
@@ -111,7 +115,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:BrowserScope>
-    <Sequence DisplayName="数据抓取" sap:VirtualizedContainerService.HintSize="472,436" sap2010:WorkflowViewState.IdRef="Sequence_8">
+    <Sequence DisplayName="scrab workitem data" sap:VirtualizedContainerService.HintSize="961,436" sap2010:WorkflowViewState.IdRef="Sequence_8">
       <Sequence.Variables>
         <Variable x:TypeArguments="sd:DataTable" Default="[New System.Data.DataTable]" Name="ExtractDataTable" />
       </Sequence.Variables>
@@ -142,7 +146,7 @@
         </ui:BrowserScope.Body>
       </ui:BrowserScope>
     </Sequence>
-    <ui:FilterDataTable DataTable="[dtWorkItems]" DisplayName="筛选数据表" FilterRowsMode="Keep" sap:VirtualizedContainerService.HintSize="472,59" sap2010:WorkflowViewState.IdRef="FilterDataTable_2" OutputDataTable="[dtWorkItem_WI5]" SelectColumnsMode="Remove">
+    <ui:FilterDataTable DataTable="[dtWorkItems]" DisplayName="筛选数据表" FilterRowsMode="Keep" sap:VirtualizedContainerService.HintSize="961,59" sap2010:WorkflowViewState.IdRef="FilterDataTable_2" OutputDataTable="[dtWorkItemWI5]" SelectColumnsMode="Remove">
       <ui:FilterDataTable.Filters>
         <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
           <ui:FilterOperationArgument BooleanOperator="And" Operator="EQ">
@@ -161,36 +165,28 @@
         </scg:List>
       </ui:FilterDataTable.SelectColumns>
     </ui:FilterDataTable>
-    <Sequence DisplayName="getOldQueueItems" sap:VirtualizedContainerService.HintSize="472,587" sap2010:WorkflowViewState.IdRef="Sequence_12">
+    <Sequence DisplayName="getOldQueueItems" sap:VirtualizedContainerService.HintSize="961,1045" sap2010:WorkflowViewState.IdRef="Sequence_12">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <TryCatch DisplayName="Try Catch 处理" sap:VirtualizedContainerService.HintSize="434,495" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <TryCatch DisplayName="Try Catch 处理" sap:VirtualizedContainerService.HintSize="430,953" sap2010:WorkflowViewState.IdRef="TryCatch_1">
         <TryCatch.Try>
-          <Sequence DisplayName="序列" sap:VirtualizedContainerService.HintSize="368,253" sap2010:WorkflowViewState.IdRef="Sequence_16">
+          <Sequence DisplayName="序列" sap:VirtualizedContainerService.HintSize="368,151" sap2010:WorkflowViewState.IdRef="Sequence_16">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:ReadCsvFile Encoding="{x:Null}" DataTable="[dtWorkItem_WI5_Local]" Delimitator="Comma" DisplayName="读取 CSV" FilePath="dt_WI5.CSV" sap:VirtualizedContainerService.HintSize="330,59" sap2010:WorkflowViewState.IdRef="ReadCsvFile_2" />
-            <Assign DisplayName="赋值" sap:VirtualizedContainerService.HintSize="330,62" sap2010:WorkflowViewState.IdRef="Assign_9">
-              <Assign.To>
-                <OutArgument x:TypeArguments="sc:IEnumerable">[IEnum_OldWI5]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="sc:IEnumerable">[dtWorkItem_WI5_Local.AsEnumerable()]</InArgument>
-              </Assign.Value>
-            </Assign>
+            <ui:ReadCsvFile Encoding="{x:Null}" DataTable="[dtOrchestratorQueue]" Delimitator="Comma" DisplayName="读取 CSV" FilePath="dt_WI5.CSV" sap:VirtualizedContainerService.HintSize="330,59" sap2010:WorkflowViewState.IdRef="ReadCsvFile_2" />
           </Sequence>
         </TryCatch.Try>
         <TryCatch.Catches>
-          <Catch x:TypeArguments="si:FileNotFoundException" sap:VirtualizedContainerService.HintSize="404,24" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+          <Catch x:TypeArguments="si:FileNotFoundException" sap:VirtualizedContainerService.HintSize="400,779" sap2010:WorkflowViewState.IdRef="Catch`1_2">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
@@ -198,57 +194,116 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="si:FileNotFoundException" Name="exception" />
               </ActivityAction.Argument>
-              <Sequence DisplayName="序列" sap:VirtualizedContainerService.HintSize="470,782" sap2010:WorkflowViewState.IdRef="Sequence_13">
+              <Sequence DisplayName="get Orchestrator Queue and put in datatable" sap:VirtualizedContainerService.HintSize="368,703" sap2010:WorkflowViewState.IdRef="Sequence_19">
                 <Sequence.Variables>
-                  <Variable x:TypeArguments="sd:DataTable" Name="tempDTforCSV" />
+                  <Variable x:TypeArguments="scg:IEnumerable(ui:QueueItem)" Name="QueueItems" />
+                  <Variable x:TypeArguments="scg:List(ui:QueueItem)" Default="[New List(of QueueItem)]" Name="listQueueItem" />
                 </Sequence.Variables>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <ui:CommentOut DisplayName="注释掉" sap:VirtualizedContainerService.HintSize="432,229" sap2010:WorkflowViewState.IdRef="CommentOut_2">
-                  <ui:CommentOut.Body>
-                    <Sequence DisplayName="忽略的活动" sap:VirtualizedContainerService.HintSize="368,151" sap2010:WorkflowViewState.IdRef="Sequence_14">
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                      <ui:BuildDataTable DataTable="[tempDTforCSV]" DisplayName="构建数据表" sap:VirtualizedContainerService.HintSize="330,59" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xD;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xD;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xD;&#xA;      &lt;xs:complexType&gt;&#xD;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xD;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xD;&#xA;            &lt;xs:complexType&gt;&#xD;&#xA;              &lt;xs:sequence&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Actions&quot; minOccurs=&quot;0&quot;&gt;&#xD;&#xA;                  &lt;xs:simpleType&gt;&#xD;&#xA;                    &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xD;&#xA;                      &lt;xs:maxLength value=&quot;100&quot; /&gt;&#xD;&#xA;                    &lt;/xs:restriction&gt;&#xD;&#xA;                  &lt;/xs:simpleType&gt;&#xD;&#xA;                &lt;/xs:element&gt;&#xD;&#xA;                &lt;xs:element name=&quot;WIID&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Description&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Type&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Status&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Date&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;              &lt;/xs:sequence&gt;&#xD;&#xA;            &lt;/xs:complexType&gt;&#xD;&#xA;          &lt;/xs:element&gt;&#xD;&#xA;        &lt;/xs:choice&gt;&#xD;&#xA;      &lt;/xs:complexType&gt;&#xD;&#xA;      &lt;xs:unique name=&quot;Constraint1&quot;&gt;&#xD;&#xA;        &lt;xs:selector xpath=&quot;.//TableName&quot; /&gt;&#xD;&#xA;        &lt;xs:field xpath=&quot;WIID&quot; /&gt;&#xD;&#xA;      &lt;/xs:unique&gt;&#xD;&#xA;    &lt;/xs:element&gt;&#xD;&#xA;  &lt;/xs:schema&gt;&#xD;&#xA;&lt;/NewDataSet&gt;" />
-                    </Sequence>
-                  </ui:CommentOut.Body>
-                </ui:CommentOut>
-                <ui:CommentOut DisplayName="注释掉" sap:VirtualizedContainerService.HintSize="432,257" sap2010:WorkflowViewState.IdRef="CommentOut_3">
-                  <ui:CommentOut.Body>
-                    <Sequence DisplayName="忽略的活动" sap:VirtualizedContainerService.HintSize="368,179" sap2010:WorkflowViewState.IdRef="Sequence_15">
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                      <ui:WriteCsvFile Encoding="{x:Null}" AddHeaders="True" DataTable="[tempDTforCSV]" Delimitator="Comma" DisplayName="写入 CSV" FilePath="dt_WI5.CSV" sap:VirtualizedContainerService.HintSize="330,87" sap2010:WorkflowViewState.IdRef="WriteCsvFile_6" />
-                    </Sequence>
-                  </ui:CommentOut.Body>
-                </ui:CommentOut>
-                <ui:GetQueueItems Duration="{x:Null}" From="{x:Null}" Priority="{x:Null}" Reference="{x:Null}" Skip="{x:Null}" TimeoutMS="{x:Null}" To="{x:Null}" Top="{x:Null}" DisplayName="获取队列项目" FilterStrategy="StartsWith" sap:VirtualizedContainerService.HintSize="432,22" sap2010:WorkflowViewState.IdRef="GetQueueItems_5" QueueItemStates="All" QueueName="[in_Config(&quot;OrchestratorQueueName&quot;).ToString]" Result="[OrchestratorQueueItems]" />
-                <Assign DisplayName="赋值" sap:VirtualizedContainerService.HintSize="432,62" sap2010:WorkflowViewState.IdRef="Assign_8">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="sc:IEnumerable">[IEnum_OldWI5]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="sc:IEnumerable">[CType(OrchestratorQueueItems,System.Collections.IEnumerable)]</InArgument>
-                  </Assign.Value>
-                </Assign>
+                <ui:GetQueueItems Duration="{x:Null}" From="{x:Null}" Priority="{x:Null}" Reference="{x:Null}" Skip="{x:Null}" TimeoutMS="{x:Null}" To="{x:Null}" Top="{x:Null}" DisplayName="获取队列项目" FilterStrategy="StartsWith" sap:VirtualizedContainerService.HintSize="330,22" sap2010:WorkflowViewState.IdRef="GetQueueItems_2" QueueItemStates="New, InProgress, Failed, Successful, Abandoned, Retried" QueueName="[in_Config(&quot;OrchestratorQueueName&quot;).ToString]" Result="[QueueItems]" />
+                <ui:ForEach x:TypeArguments="ui:QueueItem" CurrentIndex="{x:Null}" DisplayName="遍历循环" sap:VirtualizedContainerService.HintSize="330,345" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[QueueItems]">
+                  <ui:ForEach.Body>
+                    <ActivityAction x:TypeArguments="ui:QueueItem">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="ui:QueueItem" Name="item" />
+                      </ActivityAction.Argument>
+                      <Sequence DisplayName="序列" sap:VirtualizedContainerService.HintSize="292,206" sap2010:WorkflowViewState.IdRef="Sequence_18">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <Sequence DisplayName="正文" sap:VirtualizedContainerService.HintSize="254,114" sap2010:WorkflowViewState.IdRef="Sequence_17">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <AddToCollection x:TypeArguments="ui:QueueItem" Collection="[listQueueItem]" DisplayName="添加到集合" sap:VirtualizedContainerService.HintSize="216,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[item]" />
+                        </Sequence>
+                      </Sequence>
+                    </ActivityAction>
+                  </ui:ForEach.Body>
+                </ui:ForEach>
+                <ui:InvokeCode ContinueOnError="{x:Null}" Code="Dim qi As QueueItem&#xD;&#xA;Dim columnNames As New List(Of String)&#xD;&#xA;out_DataTable = New DataTable()&#xD;&#xA;&#xD;&#xA;out_isDtEmpty = True&#xD;&#xA;If  in_QueueItems.Count &gt; 0 Then&#xD;&#xA;&#x9;qi = in_QueueItems.FirstOrDefault&#xD;&#xA;    'define columns&#xD;&#xA;    For Each key As String In qi.SpecificContent.Keys&#xD;&#xA;&#x9;    Dim column As DataColumn = New DataColumn&#xD;&#xA;&#x9;    column.DataType = System.Type.GetType(&quot;System.String&quot;)&#xD;&#xA;&#x9;&#x9;column.ColumnName = key.ToString&#xD;&#xA;&#x9;    out_DataTable.Columns.Add(column)&#xD;&#xA;&#x9;    columnNames.Add(key.ToString)&#xD;&#xA;    Next&#xD;&#xA;    'add datarows To datatable&#xD;&#xA;    For Each item As UiPath.Core.QueueItem In in_QueueItems&#xD;&#xA;&#x9;    Dim dr As DataRow&#xD;&#xA;&#x9;    dr = out_DataTable.NewRow&#xD;&#xA;&#x9;    'assign data To datarow&#xD;&#xA;&#x9;    For Each col  As String In qi.SpecificContent.Keys&#xD;&#xA;&#x9;        dr(col) = item.SpecificContent(col)&#xD;&#xA;&#x9;    Next&#xD;&#xA;&#x9;    out_DataTable.Rows.Add(dr)&#xD;&#xA;    Next&#xD;&#xA;&#x9;out_isDtEmpty = False&#xD;&#xA;End If&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;&#x9;&#xD;&#xA;" DisplayName="convert queueitems to datatable" sap:VirtualizedContainerService.HintSize="330,164" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
+                  <ui:InvokeCode.Arguments>
+                    <InArgument x:TypeArguments="scg:List(ui:QueueItem)" x:Key="in_QueueItems">[listQueueItem]</InArgument>
+                    <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_DataTable">[dtOrchestratorQueue]</OutArgument>
+                    <OutArgument x:TypeArguments="x:Boolean" x:Key="out_isDtEmpty">[isDtEmpty]</OutArgument>
+                  </ui:InvokeCode.Arguments>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:InvokeCode>
               </Sequence>
             </ActivityAction>
           </Catch>
         </TryCatch.Catches>
       </TryCatch>
     </Sequence>
-    <ui:WriteCsvFile Encoding="{x:Null}" AddHeaders="True" DataTable="[dtWorkItem_WI5]" Delimitator="Comma" DisplayName="写入 CSV" FilePath="dt_WI5.CSV" sap:VirtualizedContainerService.HintSize="472,87" sap2010:WorkflowViewState.IdRef="WriteCsvFile_4" />
-    <ui:WriteCsvFile Encoding="{x:Null}" AddHeaders="True" DataTable="[dtWorkItems]" Delimitator="Comma" DisplayName="写入 CSV" FilePath="dt.CSV" sap:VirtualizedContainerService.HintSize="472,87" sap2010:WorkflowViewState.IdRef="WriteCsvFile_5" />
-    <ui:GetQueueItems Duration="{x:Null}" From="{x:Null}" Priority="{x:Null}" Reference="{x:Null}" Skip="{x:Null}" TimeoutMS="{x:Null}" To="{x:Null}" Top="{x:Null}" DisplayName="获取队列项目" FilterStrategy="StartsWith" sap:VirtualizedContainerService.HintSize="472,22" sap2010:WorkflowViewState.IdRef="GetQueueItems_1" QueueItemStates="All" QueueName="[in_Config(&quot;OrchestratorQueueName&quot;).ToString]" Result="[OrchestratorQueueItems]" />
-    <ui:BulkAddQueueItems TimeoutMS="{x:Null}" DisplayName="批量添加队列项目" sap:VirtualizedContainerService.HintSize="468,22" sap2010:WorkflowViewState.IdRef="BulkAddQueueItems_1" QueueItemsDataTable="[dtWorkItem_WI5]" QueueName="[in_Config(&quot;OrchestratorQueueName&quot;).ToString]" />
+    <If sap2010:Annotation.AnnotationText="If there is some data getted from local CSV file or Orchestrator Queue,appending the new workitems to CSV file and Orchestrator Queue.Else, make CSV file and add all workitems scrabed to the file and Orchestrator Queue. " Condition="[isDtEmpty]" DisplayName="IF条件" sap:VirtualizedContainerService.HintSize="961,897" sap2010:WorkflowViewState.IdRef="If_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If.Then>
+        <Sequence DisplayName="序列" sap:VirtualizedContainerService.HintSize="368,241" sap2010:WorkflowViewState.IdRef="Sequence_20">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:WriteCsvFile Encoding="{x:Null}" AddHeaders="True" DataTable="[dtWorkItemWI5]" Delimitator="Comma" DisplayName="写入 CSV" FilePath="dt_WI5.CSV" sap:VirtualizedContainerService.HintSize="330,87" sap2010:WorkflowViewState.IdRef="WriteCsvFile_7" />
+          <ui:BulkAddQueueItems TimeoutMS="{x:Null}" DisplayName="批量添加队列项目" sap:VirtualizedContainerService.HintSize="330,22" sap2010:WorkflowViewState.IdRef="BulkAddQueueItems_2" QueueItemsDataTable="[dtWorkItemWI5]" QueueName="[in_Config(&quot;OrchestratorQueueName&quot;).ToString]" />
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <Sequence DisplayName="序列" sap:VirtualizedContainerService.HintSize="552,693" sap2010:WorkflowViewState.IdRef="Sequence_21">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Assign DisplayName="get Except" sap:VirtualizedContainerService.HintSize="514,62" sap2010:WorkflowViewState.IdRef="Assign_10">
+            <Assign.To>
+              <OutArgument x:TypeArguments="scg:IEnumerable(sd:DataRow)">[IEnumExceptWI5]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="scg:IEnumerable(sd:DataRow)">[dtWorkItemWI5.AsEnumerable().Except(dtOrchestratorQueue.AsEnumerable(),DataRowComparer.Default)]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <If Condition="[IEnumExceptWI5.Count &gt; 0]" DisplayName="IF条件" sap:VirtualizedContainerService.HintSize="514,499" sap2010:WorkflowViewState.IdRef="If_2">
+            <If.Then>
+              <Sequence DisplayName="序列" sap:VirtualizedContainerService.HintSize="368,343" sap2010:WorkflowViewState.IdRef="Sequence_22">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign DisplayName="convert to datatable" sap:VirtualizedContainerService.HintSize="330,62" sap2010:WorkflowViewState.IdRef="Assign_11">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="sd:DataTable">[dtExceptWI5]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="sd:DataTable">[IEnumExceptWI5.CopyToDataTable]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <ui:AppendCsvFile Encoding="{x:Null}" DataTable="[dtExceptWI5]" Delimitator="Comma" DisplayName="追加到 CSV" FilePath="dt_WI5.CSV" sap:VirtualizedContainerService.HintSize="330,87" sap2010:WorkflowViewState.IdRef="AppendCsvFile_1" />
+                <ui:BulkAddQueueItems TimeoutMS="{x:Null}" DisplayName="批量添加队列项目" sap:VirtualizedContainerService.HintSize="330,22" sap2010:WorkflowViewState.IdRef="BulkAddQueueItems_1" QueueItemsDataTable="[dtExceptWI5]" QueueName="[in_Config(&quot;OrchestratorQueueName&quot;).ToString]" />
+              </Sequence>
+            </If.Then>
+          </If>
+        </Sequence>
+      </If.Else>
+    </If>
+    <ui:WriteCsvFile Encoding="{x:Null}" AddHeaders="True" DataTable="[dtWorkItems]" Delimitator="Comma" DisplayName="写入 CSV" FilePath="dt.CSV" sap:VirtualizedContainerService.HintSize="961,87" sap2010:WorkflowViewState.IdRef="WriteCsvFile_6" />
   </Sequence>
 </Activity>

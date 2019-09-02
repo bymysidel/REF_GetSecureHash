@@ -5,10 +5,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>698,1918</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>698,1546</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Initialization_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="22">
+    <scg:List x:TypeArguments="x:String" Capacity="44">
       <x:String>System.Activities.XamlIntegration</x:String>
       <x:String>System.Activities.Validation</x:String>
       <x:String>System.Activities</x:String>
@@ -31,6 +31,7 @@
       <x:String>UiPath.Core</x:String>
       <x:String>System.Security</x:String>
       <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Collections</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -58,7 +59,7 @@
       <AssemblyReference>UiPath.Mail</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description: Open and initialize application as needed.&#xA;&#xA;Pre Condition: N/A&#xA;Post Condtion: Applications opened" DisplayName="Initialization Sequence" sap:VirtualizedContainerService.HintSize="658,1798" sap2010:WorkflowViewState.IdRef="Sequence_9">
+  <Sequence sap2010:Annotation.AnnotationText="Description: Open and initialize application as needed.&#xA;&#xA;Pre Condition: N/A&#xA;Post Condtion: Applications opened" DisplayName="Initialization Sequence" sap:VirtualizedContainerService.HintSize="658,1426" sap2010:WorkflowViewState.IdRef="Sequence_9">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;Url_ACMESystem_Login&quot;).ToString]" Name="Url_ACMESystem_Login" />
     </Sequence.Variables>
@@ -69,19 +70,19 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:LogMessage DisplayName="Log App Initialization message" sap:VirtualizedContainerService.HintSize="620,97" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Opening applications...&quot;]" />
-    <ui:OpenBrowser UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Open ACME System on Browser" Hidden="False" sap:VirtualizedContainerService.HintSize="620,1485" sap2010:WorkflowViewState.IdRef="OpenBrowser_1" NewSession="True" Private="False" Url="[Url_ACMESystem_Login]">
+    <ui:OpenBrowser UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Open ACME System on Browser" Hidden="False" sap:VirtualizedContainerService.HintSize="620,888" sap2010:WorkflowViewState.IdRef="OpenBrowser_1" NewSession="True" Private="False" Url="[Url_ACMESystem_Login]">
       <ui:OpenBrowser.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="序列" sap:VirtualizedContainerService.HintSize="590,1386" sap2010:WorkflowViewState.IdRef="Sequence_12">
+          <Sequence DisplayName="序列" sap:VirtualizedContainerService.HintSize="590,789" sap2010:WorkflowViewState.IdRef="Sequence_12">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="552,1294" sap2010:WorkflowViewState.IdRef="Sequence_10">
+            <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="552,697" sap2010:WorkflowViewState.IdRef="Sequence_10">
               <Sequence.Variables>
                 <Variable x:TypeArguments="x:Boolean" Name="LoginAlready" />
                 <Variable x:TypeArguments="scg:IEnumerable(ui:QueueItem)" Name="OrchestratorQueueItems" />
@@ -90,6 +91,7 @@
                 <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="dic" />
                 <Variable x:TypeArguments="sd:DataTable" Name="dt_OrchestratorQueue" />
                 <Variable x:TypeArguments="x:String" Name="strDtO" />
+                <Variable x:TypeArguments="scg:List(ui:QueueItem)" Default="[new List(of QueueItem)()]" Name="listQueueItem" />
               </Sequence.Variables>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -117,38 +119,28 @@
                   </Sequence>
                 </If.Then>
               </If>
-              <ui:GetQueueItems Duration="{x:Null}" From="{x:Null}" Priority="{x:Null}" Reference="{x:Null}" Skip="{x:Null}" TimeoutMS="{x:Null}" To="{x:Null}" Top="{x:Null}" DisplayName="获取队列项目" FilterStrategy="StartsWith" sap:VirtualizedContainerService.HintSize="514,22" sap2010:WorkflowViewState.IdRef="GetQueueItems_1" QueueItemStates="All" QueueName="[in_Config(&quot;OrchestratorQueueName&quot;).ToString]" Result="[QueueItems]" />
-              <ui:InvokeCode ContinueOnError="{x:Null}" Code="Dim qi As QueueItem&#xD;&#xA;Dim columnNames As New List(Of String)&#xD;&#xA;Dim i As Object&#xD;&#xA;i = CType(in_QueueItems.ToList.Item(0),Object)&#xD;&#xA;'define columns&#xD;&#xA;'For Each key As Object In qi.SpecificContent.Keys&#xD;&#xA;&#x9;'Dim column As DataColumn = New DataColumn()&#xD;&#xA;&#x9;'column.DataType = System.Type.GetType(&quot;System.String&quot;)&#xD;&#xA;&#x9;'column.ColumnName = key.ToString&#xD;&#xA;&#x9;'out_DataTable.Columns.Add(column)&#xD;&#xA;&#x9;'columnNames.Add(key.ToString)&#xD;&#xA;&#x9;'key.ToString&#xD;&#xA;'Next&#xD;&#xA;'add datarows to datatable&#xD;&#xA;'For Each item As UiPath.Core.QueueItem In in_QueueItems&#xD;&#xA;&#x9;'Dim dr As DataRow&#xD;&#xA;&#x9;'dr = out_DataTable.NewRow&#xD;&#xA;&#x9;'assign data to datarow&#xD;&#xA;&#x9;'For Each col  As String In qi.SpecificContent.Keys&#xD;&#xA;&#x9;   ' dr(col) = item.SpecificContent(col)&#xD;&#xA;&#x9;'Next&#xD;&#xA;&#x9;'out_DataTable.Rows.Add(dr)&#xD;&#xA;'Next&#xD;&#xA;&#xD;&#xA;&#x9;&#xD;&#xA;" DisplayName="Invoke code" sap:VirtualizedContainerService.HintSize="514,164" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
-                <ui:InvokeCode.Arguments>
-                  <InArgument x:TypeArguments="scg:IEnumerable(ui:QueueItem)" x:Key="in_QueueItems">[OrchestratorQueueItems]</InArgument>
-                  <InOutArgument x:TypeArguments="sd:DataTable" x:Key="out_DataTable">[dt_OrchestratorQueue]</InOutArgument>
-                </ui:InvokeCode.Arguments>
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-              </ui:InvokeCode>
-              <ui:OutputDataTable DataTable="[dt_OrchestratorQueue]" DisplayName="输出数据表" sap:VirtualizedContainerService.HintSize="514,22" sap2010:WorkflowViewState.IdRef="OutputDataTable_1" Text="[strDtO]" />
-              <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" Buttons="Ok" DisplayName="消息框" sap:VirtualizedContainerService.HintSize="514,59" sap2010:WorkflowViewState.IdRef="MessageBox_1" Text="[strDtO]" TopMost="True" />
-              <ui:CommentOut DisplayName="注释掉" sap:VirtualizedContainerService.HintSize="514,257" sap2010:WorkflowViewState.IdRef="CommentOut_1">
-                <ui:CommentOut.Body>
-                  <Sequence DisplayName="忽略的活动" sap:VirtualizedContainerService.HintSize="368,179" sap2010:WorkflowViewState.IdRef="Sequence_13">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="调用工作流文件" sap:VirtualizedContainerService.HintSize="330,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Dispatcher.xaml">
-                      <ui:InvokeWorkflowFile.Arguments>
-                        <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">[in_Config]</InArgument>
-                      </ui:InvokeWorkflowFile.Arguments>
-                    </ui:InvokeWorkflowFile>
-                  </Sequence>
-                </ui:CommentOut.Body>
-              </ui:CommentOut>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="make Queue" sap:VirtualizedContainerService.HintSize="514,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Dispatcher.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">[in_Config]</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
             </Sequence>
+          </Sequence>
+        </ActivityAction>
+      </ui:OpenBrowser.Body>
+    </ui:OpenBrowser>
+    <ui:OpenBrowser UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Access SHA1 System" Hidden="False" sap:VirtualizedContainerService.HintSize="620,185" sap2010:WorkflowViewState.IdRef="OpenBrowser_2" NewSession="False" Private="False" Url="[in_Config(&quot;Url_SHA1Online&quot;).ToString]">
+      <ui:OpenBrowser.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="216,86" sap2010:WorkflowViewState.IdRef="Sequence_17">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
           </Sequence>
         </ActivityAction>
       </ui:OpenBrowser.Body>
