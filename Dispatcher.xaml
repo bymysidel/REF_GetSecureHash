@@ -1,11 +1,11 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Dispatcher" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:sc="clr-namespace:System.Collections;assembly=mscorlib" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:si="clr-namespace:System.IO;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Dispatcher" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:sc="clr-namespace:System.Collections;assembly=mscorlib" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:si="clr-namespace:System.IO;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>550,2074</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1039,2781</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Dispatcher_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="22">
@@ -57,7 +57,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Dispatcher" sap:VirtualizedContainerService.HintSize="999,3160" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Dispatcher" sap:VirtualizedContainerService.HintSize="999,2661" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="dtWorkItems" />
       <Variable x:TypeArguments="sd:DataTable" Name="dtWorkItemWI5" />
@@ -73,6 +73,7 @@
       <Variable x:TypeArguments="x:String" Name="steWorkItemWI5" />
       <Variable x:TypeArguments="x:String" Name="strOrchestratorQueue" />
       <Variable x:TypeArguments="x:Boolean" Name="isDtEmpty" />
+      <Variable x:TypeArguments="s:Exception" Name="NoBusinessDataException" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -165,13 +166,18 @@
         </scg:List>
       </ui:FilterDataTable.SelectColumns>
     </ui:FilterDataTable>
-    <Sequence DisplayName="getOldQueueItems" sap:VirtualizedContainerService.HintSize="961,1045" sap2010:WorkflowViewState.IdRef="Sequence_12">
+    <If Condition="[dtWorkItemWI5.Rows.Count &lt;= 0]" sap:VirtualizedContainerService.HintSize="961,216" sap2010:WorkflowViewState.IdRef="If_3">
+      <If.Then>
+        <TerminateWorkflow DisplayName="Terminate Workflow" Exception="[NoBusinessDataException]" sap:VirtualizedContainerService.HintSize="216,22" sap2010:WorkflowViewState.IdRef="TerminateWorkflow_1" Reason="No WI5 Data to deal" />
+      </If.Then>
+    </If>
+    <Sequence DisplayName="getOldQueueItems" sap:VirtualizedContainerService.HintSize="961,290" sap2010:WorkflowViewState.IdRef="Sequence_12">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <TryCatch DisplayName="Try Catch 处理" sap:VirtualizedContainerService.HintSize="430,953" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <TryCatch DisplayName="Try Catch 处理" sap:VirtualizedContainerService.HintSize="430,198" sap2010:WorkflowViewState.IdRef="TryCatch_1">
         <TryCatch.Try>
           <Sequence DisplayName="序列" sap:VirtualizedContainerService.HintSize="368,151" sap2010:WorkflowViewState.IdRef="Sequence_16">
             <sap:WorkflowViewStateService.ViewState>
@@ -183,10 +189,10 @@
           </Sequence>
         </TryCatch.Try>
         <TryCatch.Catches>
-          <Catch x:TypeArguments="si:FileNotFoundException" sap:VirtualizedContainerService.HintSize="400,779" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+          <Catch x:TypeArguments="si:FileNotFoundException" sap:VirtualizedContainerService.HintSize="400,24" sap2010:WorkflowViewState.IdRef="Catch`1_2">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
@@ -194,7 +200,7 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="si:FileNotFoundException" Name="exception" />
               </ActivityAction.Argument>
-              <Sequence DisplayName="get Orchestrator Queue and put in datatable" sap:VirtualizedContainerService.HintSize="368,703" sap2010:WorkflowViewState.IdRef="Sequence_19">
+              <Sequence DisplayName="get Orchestrator Queue and put in datatable" sap:VirtualizedContainerService.HintSize="368,661" sap2010:WorkflowViewState.IdRef="Sequence_19">
                 <Sequence.Variables>
                   <Variable x:TypeArguments="scg:IEnumerable(ui:QueueItem)" Name="QueueItems" />
                   <Variable x:TypeArguments="scg:List(ui:QueueItem)" Default="[New List(of QueueItem)]" Name="listQueueItem" />
@@ -229,7 +235,7 @@
                     </ActivityAction>
                   </ui:ForEach.Body>
                 </ui:ForEach>
-                <ui:InvokeCode ContinueOnError="{x:Null}" Code="Dim qi As QueueItem&#xD;&#xA;Dim columnNames As New List(Of String)&#xD;&#xA;out_DataTable = New DataTable()&#xD;&#xA;&#xD;&#xA;out_isDtEmpty = True&#xD;&#xA;If  in_QueueItems.Count &gt; 0 Then&#xD;&#xA;&#x9;qi = in_QueueItems.FirstOrDefault&#xD;&#xA;    'define columns&#xD;&#xA;    For Each key As String In qi.SpecificContent.Keys&#xD;&#xA;&#x9;    Dim column As DataColumn = New DataColumn&#xD;&#xA;&#x9;    column.DataType = System.Type.GetType(&quot;System.String&quot;)&#xD;&#xA;&#x9;&#x9;column.ColumnName = key.ToString&#xD;&#xA;&#x9;    out_DataTable.Columns.Add(column)&#xD;&#xA;&#x9;    columnNames.Add(key.ToString)&#xD;&#xA;    Next&#xD;&#xA;    'add datarows To datatable&#xD;&#xA;    For Each item As UiPath.Core.QueueItem In in_QueueItems&#xD;&#xA;&#x9;    Dim dr As DataRow&#xD;&#xA;&#x9;    dr = out_DataTable.NewRow&#xD;&#xA;&#x9;    'assign data To datarow&#xD;&#xA;&#x9;    For Each col  As String In qi.SpecificContent.Keys&#xD;&#xA;&#x9;        dr(col) = item.SpecificContent(col)&#xD;&#xA;&#x9;    Next&#xD;&#xA;&#x9;    out_DataTable.Rows.Add(dr)&#xD;&#xA;    Next&#xD;&#xA;&#x9;out_isDtEmpty = False&#xD;&#xA;End If&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;&#x9;&#xD;&#xA;" DisplayName="convert queueitems to datatable" sap:VirtualizedContainerService.HintSize="330,164" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
+                <ui:InvokeCode ContinueOnError="{x:Null}" Code="Dim qi As QueueItem&#xA;Dim columnNames As New List(Of String)&#xA;out_DataTable = New DataTable()&#xA;&#xA;out_isDtEmpty = True&#xA;If  in_QueueItems.Count &gt; 0 Then&#xA;&#x9;qi = in_QueueItems.FirstOrDefault&#xA;    'define columns&#xA;    For Each key As String In qi.SpecificContent.Keys&#xA;&#x9;    Dim column As DataColumn = New DataColumn&#xA;&#x9;    column.DataType = System.Type.GetType(&quot;System.String&quot;)&#xA;&#x9;&#x9;column.ColumnName = key.ToString&#xA;&#x9;    out_DataTable.Columns.Add(column)&#xA;&#x9;    columnNames.Add(key.ToString)&#xA;    Next&#xA;    'add datarows To datatable&#xA;    For Each item As UiPath.Core.QueueItem In in_QueueItems&#xA;&#x9;    Dim dr As DataRow&#xA;&#x9;    dr = out_DataTable.NewRow&#xA;&#x9;    'assign data To datarow&#xA;&#x9;    For Each col  As String In qi.SpecificContent.Keys&#xA;&#x9;        dr(col) = item.SpecificContent(col)&#xA;&#x9;    Next&#xA;&#x9;    out_DataTable.Rows.Add(dr)&#xA;    Next&#xA;&#x9;out_isDtEmpty = False&#xA;End If&#xA;&#xA;&#xA;&#x9;&#xA;" DisplayName="convert queueitems to datatable" sap:VirtualizedContainerService.HintSize="330,164" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
                   <ui:InvokeCode.Arguments>
                     <InArgument x:TypeArguments="scg:List(ui:QueueItem)" x:Key="in_QueueItems">[listQueueItem]</InArgument>
                     <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_DataTable">[dtOrchestratorQueue]</OutArgument>

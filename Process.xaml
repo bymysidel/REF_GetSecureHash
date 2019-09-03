@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Drawing;assembly=System.Drawing" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
@@ -60,15 +60,18 @@
   </TextExpression.ReferencesForImplementation>
   <Flowchart DisplayName="Process" sap:VirtualizedContainerService.HintSize="630,636" sap2010:WorkflowViewState.IdRef="Flowchart_1">
     <Flowchart.Variables>
-      <Variable x:TypeArguments="sd:DataTable" Name="dtWorkItems" />
-      <Variable x:TypeArguments="x:String" Name="strDtWorkItems" />
+      <Variable x:TypeArguments="x:String" Name="strClientId" />
+      <Variable x:TypeArguments="x:String" Name="strClientName" />
+      <Variable x:TypeArguments="x:String" Name="strClientCountry" />
+      <Variable x:TypeArguments="ui:GenericValue" Name="shaHash" />
+      <Variable x:TypeArguments="x:String" Name="strSecureHash" />
     </Flowchart.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">False</x:Boolean>
         <av:Point x:Key="ShapeLocation">270,2.5</av:Point>
         <av:Size x:Key="ShapeSize">60,75</av:Size>
-        <av:PointCollection x:Key="ConnectorLocation">300,77.5 300,107.5 240,107.5 240,47.5 120,47.5 120,63</av:PointCollection>
+        <av:PointCollection x:Key="ConnectorLocation">300,77.5 300,118</av:PointCollection>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <Flowchart.StartNode>
@@ -77,36 +80,35 @@
     <FlowStep x:Name="__ReferenceID0">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <av:Point x:Key="ShapeLocation">12,63</av:Point>
-          <av:Size x:Key="ShapeSize">216,54</av:Size>
+          <av:Point x:Key="ShapeLocation">192,118</av:Point>
+          <av:Size x:Key="ShapeSize">216,84</av:Size>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="附加浏览器 'chrome.exe ACME'" sap:VirtualizedContainerService.HintSize="430,846" sap2010:WorkflowViewState.IdRef="BrowserScope_1" InformativeScreenshot="fd007571568563fbcc9ec7fd0443dca8" Selector="&lt;html app='chrome.exe' title='ACME System 1 - Work Items' /&gt;">
+      <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" sap2010:Annotation.AnnotationText="get workitem detial." BrowserType="Chrome" DisplayName="附加浏览器 'chrome.exe ACME'" sap:VirtualizedContainerService.HintSize="498,2021" sap2010:WorkflowViewState.IdRef="BrowserScope_1" InformativeScreenshot="fd007571568563fbcc9ec7fd0443dca8" Selector="&lt;html app='chrome.exe' title='ACME System 1 - Work Items' /&gt;">
         <ui:BrowserScope.Body>
           <ActivityAction x:TypeArguments="x:Object">
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="372,700" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="468,1845" sap2010:WorkflowViewState.IdRef="Sequence_2">
               <Sequence.Variables>
                 <Variable x:TypeArguments="ui:GenericValue" Name="strDetail" />
-                <Variable x:TypeArguments="x:String" Name="strClientId" />
-                <Variable x:TypeArguments="x:String" Name="strClientName" />
-                <Variable x:TypeArguments="x:String" Name="strCilentCountry" />
+                <Variable x:TypeArguments="s:String[]" Name="clientInfo" />
+                <Variable x:TypeArguments="s:String[]" Default="[{&quot;Client ID:&quot;,&quot;Client Name:&quot;,&quot;Client Country:&quot;}]" Name="separators" />
               </Sequence.Variables>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ui:NavigateTo Browser="{x:Null}" DisplayName="导航到 detail page" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="NavigateTo_2" Url="[String.Format(in_Config(&quot;Url_ACMESystem_WorkItemDetail&quot;).ToString,in_TransactionItem.SpecificContent(&quot;WIID&quot;).ToString)]">
+              <ui:NavigateTo Browser="{x:Null}" DisplayName="导航到 detail page" sap:VirtualizedContainerService.HintSize="430,59" sap2010:WorkflowViewState.IdRef="NavigateTo_2" Url="[String.Format(in_Config(&quot;Url_ACMESystem_WorkItemDetail&quot;).ToString,in_TransactionItem.SpecificContent(&quot;WIID&quot;).ToString)]">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
               </ui:NavigateTo>
-              <ui:GetValue ContinueOnError="{x:Null}" DisplayName="Get Text 'H4'" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="GetValue_1">
+              <ui:GetValue ContinueOnError="{x:Null}" DisplayName="Get Text 'H4'" sap:VirtualizedContainerService.HintSize="430,106" sap2010:WorkflowViewState.IdRef="GetValue_1">
                 <ui:GetValue.Target>
                   <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="4b64a73b5345fd80281cb89122e635c1" Selector="&lt;webctrl idx='1' tag='P' /&gt;" WaitForReady="INTERACTIVE" />
                 </ui:GetValue.Target>
@@ -114,112 +116,157 @@
                   <OutArgument x:TypeArguments="ui:GenericValue">[strDetail]</OutArgument>
                 </ui:GetValue.Value>
               </ui:GetValue>
-              <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" Buttons="Ok" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="MessageBox_1" Text="[strDetail]" TopMost="True" />
-              <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="334,160" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+              <ui:MultipleAssign DisplayName="多重分配" sap:VirtualizedContainerService.HintSize="430,191" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
                 <ui:MultipleAssign.AssignOperations>
                   <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                     <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
                       <ui:AssignOperation.To>
-                        <OutArgument x:TypeArguments="x:String">[strClientId]</OutArgument>
+                        <OutArgument x:TypeArguments="s:String[]">[clientInfo]</OutArgument>
                       </ui:AssignOperation.To>
                       <ui:AssignOperation.Value>
-                        <InArgument x:TypeArguments="x:String">[strDetail.Trim().IndexOf("Client ID:")]</InArgument>
+                        <InArgument x:TypeArguments="s:String[]" xml:space="preserve">[strDetail.Split(separators,StringSplitOptions.RemoveEmptyEntries
+)]</InArgument>
                       </ui:AssignOperation.Value>
                     </ui:AssignOperation>
-                    <ui:AssignOperation To="{x:Null}" Value="{x:Null}" sap2010:WorkflowViewState.IdRef="AssignOperation_2" />
-                    <ui:AssignOperation To="{x:Null}" Value="{x:Null}" sap2010:WorkflowViewState.IdRef="AssignOperation_3" />
+                    <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+                      <ui:AssignOperation.To>
+                        <OutArgument x:TypeArguments="x:String">[strClientID]</OutArgument>
+                      </ui:AssignOperation.To>
+                      <ui:AssignOperation.Value>
+                        <InArgument x:TypeArguments="x:String">[clientInfo(1).Trim]</InArgument>
+                      </ui:AssignOperation.Value>
+                    </ui:AssignOperation>
+                    <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+                      <ui:AssignOperation.To>
+                        <OutArgument x:TypeArguments="x:String">[strClientName]</OutArgument>
+                      </ui:AssignOperation.To>
+                      <ui:AssignOperation.Value>
+                        <InArgument x:TypeArguments="x:String">[clientInfo(2).Trim]</InArgument>
+                      </ui:AssignOperation.Value>
+                    </ui:AssignOperation>
+                    <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+                      <ui:AssignOperation.To>
+                        <OutArgument x:TypeArguments="x:String">[strClientCountry]</OutArgument>
+                      </ui:AssignOperation.To>
+                      <ui:AssignOperation.Value>
+                        <InArgument x:TypeArguments="x:String">[clientInfo(3).Trim]</InArgument>
+                      </ui:AssignOperation.Value>
+                    </ui:AssignOperation>
                   </scg:List>
                 </ui:MultipleAssign.AssignOperations>
               </ui:MultipleAssign>
-              <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="334,64" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[strDetail]" />
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="调用工作流文件" sap:VirtualizedContainerService.HintSize="430,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="GetHashOnline.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ClientID">[strClientId]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ClientName">[strClientName]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ClientCountry">[strClientCountry]</InArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_SecureHash">[strSecureHash]</OutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <ui:NavigateTo Browser="{x:Null}" DisplayName="导航到 workitem update page" sap:VirtualizedContainerService.HintSize="430,59" sap2010:WorkflowViewState.IdRef="NavigateTo_3" Url="[in_Config(&quot;Url_ACMESystem_WorkItemUpdate&quot;).ToString + in_TransactionItem.SpecificContent(&quot;WIID&quot;).ToString]" />
+              <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="输入信息 'TEXTAREA  newComment'" EmptyField="False" sap:VirtualizedContainerService.HintSize="430,134" sap2010:WorkflowViewState.IdRef="TypeInto_2" SendWindowMessages="False" SimulateType="False" Text="[strSecureHash]">
+                <ui:TypeInto.Target>
+                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="8f94bbc7a78a8342ad9fa4bc1a0e4397" Selector="&lt;webctrl tag='TEXTAREA' /&gt;" WaitForReady="INTERACTIVE" />
+                </ui:TypeInto.Target>
+              </ui:TypeInto>
+              <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click 'BUTTON'" sap:VirtualizedContainerService.HintSize="430,106" sap2010:WorkflowViewState.IdRef="Click_2" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="False">
+                <ui:Click.CursorPosition>
+                  <ui:CursorPosition Position="Center">
+                    <ui:CursorPosition.OffsetX>
+                      <InArgument x:TypeArguments="x:Int32" />
+                    </ui:CursorPosition.OffsetX>
+                    <ui:CursorPosition.OffsetY>
+                      <InArgument x:TypeArguments="x:Int32" />
+                    </ui:CursorPosition.OffsetY>
+                  </ui:CursorPosition>
+                </ui:Click.CursorPosition>
+                <ui:Click.Target>
+                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="456da8f9679bbe59972d51dcc7932da1" Selector="&lt;webctrl aaname='---' tag='BUTTON' /&gt;" WaitForReady="INTERACTIVE" />
+                </ui:Click.Target>
+              </ui:Click>
+              <ui:ClickOCRText ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click OCR Text 'SPAN'" sap:VirtualizedContainerService.HintSize="430,201" sap2010:WorkflowViewState.IdRef="ClickOCRText_1" KeyModifiers="None" MouseButton="BTN_LEFT" Occurrence="1" SendWindowMessages="True" Text="Completed">
+                <ui:ClickOCRText.CursorPosition>
+                  <ui:CursorPosition Position="Center">
+                    <ui:CursorPosition.OffsetX>
+                      <InArgument x:TypeArguments="x:Int32" />
+                    </ui:CursorPosition.OffsetX>
+                    <ui:CursorPosition.OffsetY>
+                      <InArgument x:TypeArguments="x:Int32" />
+                    </ui:CursorPosition.OffsetY>
+                  </ui:CursorPosition>
+                </ui:ClickOCRText.CursorPosition>
+                <ui:ClickOCRText.OCREngine>
+                  <ActivityFunc x:TypeArguments="sd:Image, scg:IEnumerable(scg:KeyValuePair(sd:Rectangle, x:String))">
+                    <ActivityFunc.Argument>
+                      <DelegateInArgument x:TypeArguments="sd:Image" Name="Image" />
+                    </ActivityFunc.Argument>
+                    <ui:GoogleOCR FilterRegion="{x:Null}" Output="{x:Null}" Text="{x:Null}" AllowedCharacters="" ComputeSkewAngle="False" DeniedCharacters="" DisplayName="Tesseract OCR" ExtractWords="True" sap:VirtualizedContainerService.HintSize="216,22" sap2010:WorkflowViewState.IdRef="GoogleOCR_1" Image="[Image]" Invert="False" Language="eng" Profile="Screen" Scale="2" />
+                  </ActivityFunc>
+                </ui:ClickOCRText.OCREngine>
+                <ui:ClickOCRText.Target>
+                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="3082c9dd8b8146975e56aa46abe2c918" Selector="&lt;webctrl aaname='Completed' tag='SPAN' /&gt;" WaitForReady="INTERACTIVE" />
+                </ui:ClickOCRText.Target>
+              </ui:ClickOCRText>
+              <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click 'BUTTON  buttonUpdate'" sap:VirtualizedContainerService.HintSize="430,106" sap2010:WorkflowViewState.IdRef="Click_3" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="False">
+                <ui:Click.CursorPosition>
+                  <ui:CursorPosition Position="Center">
+                    <ui:CursorPosition.OffsetX>
+                      <InArgument x:TypeArguments="x:Int32" />
+                    </ui:CursorPosition.OffsetX>
+                    <ui:CursorPosition.OffsetY>
+                      <InArgument x:TypeArguments="x:Int32" />
+                    </ui:CursorPosition.OffsetY>
+                  </ui:CursorPosition>
+                </ui:Click.CursorPosition>
+                <ui:Click.Target>
+                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="df3b8a3b0189659a66eb38481b750ec9" Selector="&lt;webctrl id='buttonUpdate' tag='BUTTON' /&gt;" WaitForReady="INTERACTIVE" />
+                </ui:Click.Target>
+              </ui:Click>
+              <ui:OnImageAppear ContinueOnError="{x:Null}" FoundElement="{x:Null}" DisplayName="On Image Appear 'chrome.exe ACME'" sap:VirtualizedContainerService.HintSize="430,344" sap2010:WorkflowViewState.IdRef="OnImageAppear_1" RepeatForever="False">
+                <ui:OnImageAppear.Body>
+                  <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="368,198" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Image 'chrome.exe ACME'" sap:VirtualizedContainerService.HintSize="330,106" sap2010:WorkflowViewState.IdRef="ClickImage_2" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+                      <ui:ClickImage.CursorPosition>
+                        <ui:CursorPosition Position="Center">
+                          <ui:CursorPosition.OffsetX>
+                            <InArgument x:TypeArguments="x:Int32" />
+                          </ui:CursorPosition.OffsetX>
+                          <ui:CursorPosition.OffsetY>
+                            <InArgument x:TypeArguments="x:Int32" />
+                          </ui:CursorPosition.OffsetY>
+                        </ui:CursorPosition>
+                      </ui:ClickImage.CursorPosition>
+                      <ui:ClickImage.Image>
+                        <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAEAAAAAiCAYAAADvVd+PAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFWSURBVGhD7ZmxasMwEIb9lh2SKYUszdsUkqEUOmbvUkjXNFuhW/ADxKMnpRZ2/Fd3SYzsuO0SCZM7wQ/26TT8351kjBIIHwwgy2t8pBXevkq8fsoReU7IPL0s3i1mL98YLwzuHm9b5JG8kueEKMxXFqO5weTJYPq8F6F755U8J1T9B0eDAn2JtywqOAMYOxJ9CRLEAGhf9E1KkAJQAApAASgABRABwHJX889HM/KyNb/OAbOzXsxiW7i8osLSy7u2ogAgc20jJ3MehC4AXtOBFELhAWwqGBywvpgrkaHGdnN89wFwt0QwTwoPID38asY3fX5m84Hb3ldwAH9Vk+ZaAIrjOZGll7mhNKgO4MpTvrc1QmuQZwBD611zfYUH4NRUt4n9/xWIdRZEAUBiQ/7obIsugHMsdCdEAzBUKQAFoAAUgAJQANIBiL8YEX01Jv5yVPb1uMUPyWDkXmCqPhAAAAAASUVORK5CYII=" />
+                      </ui:ClickImage.Image>
+                      <ui:ClickImage.Target>
+                        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
+                      </ui:ClickImage.Target>
+                    </ui:ClickImage>
+                  </Sequence>
+                </ui:OnImageAppear.Body>
+                <ui:OnImageAppear.Image>
+                  <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAb0AAACGCAYAAABJ5FSeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAA1fSURBVHhe7dzPah1HFsfxPEoM806ziIlJDMNA8gZeBNuPILAWYUDLgLMbzBgSskuyk2dWDn4AC5yAF0ETCzvu9Kk/3aeqTv/R/SPr6nw/0ES3/1RXVXefn/rK5KPz8/MOAAAPPkr/BQDgxiP0AABuEHoAADcIPQCAG4QeAMANQg8A4AahBwBwg9ADALhB6AEA3CD0AABuEHoAADcIPQCAG4QeAMANQg8A4AahBwBwg9ADALhB6AEA3CD0AABuEHoAADcIPQCAG4QesMbpw+7jO992r9LHy3j1+LONjwWwW4QeBhTnGYQecCMQetfaq+7xnb91Hz94lj7v180tzmkeb1WLOa/Puvv1fktLbkeC0do+txCGwJVyG3qnD/qCs/MwicX108fXvIy9+rb79NZnXd3Nmxh6YUx9uIRrIuNW48vb7p+mFYGE3sTc3HrYFbv2wnodepeZv6o/APaP0NspQu86CddYj8cMpfhmNwafHXqhrak5mwi9eMwYlDE4VRuEHnDltg69+GCXi1X0m/3Swz4U2lCIx+2xjeqrJiOk6nbXBM5Sn+fbNL4qC2Oxv0Ir3yK0uthGZfDUIZqPqc5VFc7Z8VXzHJdYmOevxbKpaxw05y3fmra9DxpWwMk669hiXyv00rrHD5u5CP2u25T2pvqZx1f3DcCV2EHoVQUiPdRjMU8FunrI83GhaFRFYFhX/1ZstVsUllgc1xTpUKCborTUprVdz0Hcvi4kYrubhF75xtH2afGahM/VPj3rWsQC3u5bSn2YuMbttcvnqt+CyjbW3QeWFFJVn0N7zTUXsn/ui3HsEIp6v6hsM10ffY7U3zAOY/26ewXAruzh682qUIeiWRYKLRSNqljahc1otz5OTK2vmKG32GYdQrWl7VoskJuEXlPww3zNBVPVzsT+5rVI55wd08I1nvsFI7e78X1gMa9jPM4OSxljng/9syiPk37qc4d+N2MTcd50YMc34bnrBGDfdhJ6zdda/TJbzJS5QlsXKF08w3HVOcclFuC2X2NhtgrxmjZzIQ7rJgrrbEEe2GMs56Nuzz7GWj93TS4Xestjso/Lpo8Px+nrucF9YNHtjqStqcDR28r92nOVfWrOFX4BqOa7EI8n/IAPY8vQSw9wUazKIjdfEDcvdkvtLpkMvcu0OQRgDtMPGXq6aM9fE5ehN/UWL8J85Gs4zmU4j3VMuu7Sr/FccZxyL9yX4+QarFzW3S8AdmG70DO/1qqK3MJXXxsXu4V2l5iFc6M2dV+XA2Jkj7Gcj7o9+5ii32uuyY5Db2ne7JAq2934PrBIf4q24rmaeUvK9uSc/dw8rtuopHOcDqE3kvbm74F0jrldAOzFdqFnFM9QvPpCNT70seDUBaT4hywbFbvUbl1spU9zxSqJ/bTDYbpN6Ve1LRT8cQ5CH43zh/XVsc2+6Q1iXFcGgz0vcd2wz6prUh2T2Nei7oM1lvlrnMel+13P/+b3gaU8bm7/dixybDl/c0K/CT3gYGz9N71cUMevap41RVLE4qKWVOC2LXZNu8ZxthxwcWmLerkUBbTYVhev2Hf7uCowq31lHsKbwzAfdugN+6elnutV1ySEdd4n9su+FmtCL2rmRreVA31YyuO3vQ8a+nzWvsP4rWtC6AE31U7+IQuuih0CWG/8haAN7WhFIFUBboay2m4vhB7wIRB6B4XQOwS86QHXF6F3UAg9ANgGoQcAcIPQAwC4QegBANwg9AAAbhB6AAA3CD0AgBuEHgDADUIPAOAGoQcAcIPQAwC4QegBANwg9AAAbhB6AAA3CD0AgBuEHgDADUIPAOAGoQcAcIPQAwC4cRCh9+uTr7o7R8/SJ1y1q53/s+6He//sTk7TxwNSzNPLp92Du191P7yMH7dzuHMCXDfbhV54sI+75+ljENbVD+h2D+2lim46/520PHhyFlYTnJu7zNxtP883JPR2itADdmXLN71n3UkdcKfHRdgEVjhewuWLifSr/C2b0NscobcOoQdcf1t/vfn8qAy450d92Jz2IXfvafdrWlcXg/BZvY2ND3MOqximOTybYpKCdboIVKGX9h+XcVvZF3VMDurizTEGt4x5OGamyNVzE/uhw3/sZz0n5X7G9qnzWr9gyHnz9cjbizmp9i/GnJbhfOO1ycswxsl5jkV7WK/uDdGOfe7aVm3JUs1F3d54Deq+q3HXY1Zt5us4XPdiLtUxxXH6Hsw/l+cvx1hue3CvH8MwTyr0mntIEIrAWtv/TU8X1PDgygMpD+EYIFIs8gMZCpIueqFw6OIgD335UIdjcjExH/paLjLpY69oI7H7ktrOBU1tz0VvLC7teQrF3BjHV9sLeluzXz+/RxPH6TFk+vg8LjUX5TzEa6ALqDV3o7LgtvvG7Tr8i32kb0V/L1/AcyiJ0HbRXj+eMLY4rrof4TzFPSjKPrfXXSzNk7434r5Fv4px230br4meE2N+mvsDwJQd/EMW9XDLw5ce+jHo9MNvF7SxWOh9R8P2pkBOadspC5KwzqX6Z4RH24Y9npE+R/+zFCY1R9KeLnS5uA5LLmSrx91bFXp1W9LPuK4do7EuB6da8hw0++pzZ0MfrPlbmlMh/S3PH+dx5lirH4k1Zj1POlSz5Xmqrn19r+nrYPWtWFeOK5xH7W/1D4BtB6E3PnTyMA4FRx5aKQDFw2s8/L2xWMxsL4rbkradsiD1jMKdlzAGXZSSpo0VBTqHvxwb+y59ywU/9zG2UxQ+Ob/6rOdg6KPF6HdxDaztar4WC7y0VZ0/j1HUc1T3e1ykD9b1XpjTdN10H8u5be8fUfdLM0NDzZO1fXGeir5Y/ZJ1sX2zbzOhV7RnXk8AU3YSevGhfdo/mPrhiw/1SVEc7II2PvRWcVDbU8GbLIiDtp22sIxFx2QUk7aNhQItQvjL3Iz9CSHxpG9/LohknQ5BLQTPRN+ttpZCT61rx1iumwqAPAfN8WH8ZXsja/7m53Sqf7FPM8cWIVKy2tRzshxwUblO34PWfa3uP6tvxbp2XNInOZfZdwCTdhJ6sUD0D2H14IYH0wofvV84dq44VMUknWuqKEZtO815e6F/dbHJVNHL2gKzIvTy3OjjpKAVbyvSX91ObDf3Tc5bnMPo22i+LevYXECDsF3PXTo+bW/mMY0ln6+d59ifOjSyZv80X5NzGs6n+p/2z+2H9orx9f0Pf/80+tG3Fc4zMea8rxV6S/NU3oP650zW5X7Gvk1es/S5mJM07vr5AjBvN6FXFYmsLYBRLEzywMZlfJit4pD216GRH3i9LhuKQVzGPqVCEtaP56j7IstYCMtwaPphFaOGtY+sq8aZwiMu/Tb9L2CrMS0WurqtJ/3nybb6pZ7H6viTIz1uPY/xWAmFcXzWPFfHhGWc2/jLUVru9UG0MKfl/k+75/110fdefU3HbTFcxm1teA7b1JyYoSdm50nfy9Z9LevU+eeu2eQ91O9rPF8Apu0o9HAwjDDHNSQhWP8yUrCCEMASQs8bQu8ArAg0riOwEULPG4rltVR8Zdsv5tepgxiK8/sAsBB6AAA3CD0AgBuEHgDADUIPAOAGoQcAcIPQAwC4QegBANwg9AAAbhB6AAA3CD0AgBuEHgDADUIPAOAGoQcAcIPQAwC4QegBANwg9AAAbhB6AAA3CD0AgBuEHgAcoLPX77ufXrzrnv7vbffvUz+LjPm339+nWbg8Qg8ADowEngTA8fcX3Zcnf3S3j8+7vx/d7EXGKGOVMcvYNw0+Qg8ADoy87Tz67qL75NF59/nX590//vV/F8vdfqwyZhm7zMEmCD0AODDypvNF/9YjIWCFw01eJORl7PK17iYIPQA4MBJ6t/s3HisUPCwydpmDTRB6AHBgpODL37msQPCwyNgJPQBwgtAj9ADADUKP0AMANwg9Qg8A3CD0CD0AcIPQI/QAwA1Cj9ADADeuKvS+eVn9r75evy22//i6685fXqh1F90vb/r93rzrvlH77Xoh9ADAkasIPQm0MrxSoKngq0MvHFMF4z4WQg8AHNl76P38rjvv/ux+bLa97c66990vP8fPOvTCW+EVBJ4shB4AOLL30Hvx52SA6aDLP4fA2/NXmnoh9ADAkX2H3txbm2wrQu9N/Lvf2Yt2330thB4AOHKd3vTCG57sr7723PdC6AGAI3sPvQ3+pheC0jxm9wuhBwCO7D30+mV4ixvWLf/rzav62x6hBwCOXEXoyRJCTKu+8qxDL6/b9xsfoQcAjlxV6F3XhdADAEcIPUIPANwg9Ag9AHCD0CP0AMANQo/QAwA3CD1CDwDcIPQIPQBwg9Aj9ADADSn4tx/5DT0ZO6EHAE5Iwf/i5I/u7tf+gu/zfswy9v/8l9ADABd+evGue/TdRfdJ/8YjIWCFw01cJORlzDJ2mYNNEHoAcGDOXr8Pb3vH3190X/ZvPbePz8PfuW7yImOUscqYZey//V79f0FXIvQA4ABJ8MnbjnzNJyHgZZExbxp4gtADALhB6AEA3CD0AABuEHoAADcIPQCAG4QeAMANQg8A4AahBwBwg9ADALhB6AEA3CD0AABuEHoAADcIPQCAG4QeAMCJrvsLxqUYX4PG0zsAAAAASUVORK5CYII=" />
+                </ui:OnImageAppear.Image>
+                <ui:OnImageAppear.Target>
+                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
+                </ui:OnImageAppear.Target>
+              </ui:OnImageAppear>
             </Sequence>
           </ActivityAction>
         </ui:BrowserScope.Body>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </ui:BrowserScope>
-    </FlowStep>
-    <FlowStep>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <av:Point x:Key="ShapeLocation">12,263</av:Point>
-          <av:Size x:Key="ShapeSize">216,72</av:Size>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <Sequence DisplayName="Screen Scraping" sap:VirtualizedContainerService.HintSize="216,72" sap2010:WorkflowViewState.IdRef="Sequence_4">
-        <Sequence.Variables>
-          <Variable x:TypeArguments="ui:GenericValue" Name="P" />
-        </Sequence.Variables>
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Attach Browser 'ACMESyste Page'" sap:VirtualizedContainerService.HintSize="430,344" sap2010:WorkflowViewState.IdRef="BrowserScope_2" InformativeScreenshot="4a13a106190947b77bed84a206bdac68" Selector="&lt;html app='chrome.exe' title='ACME System 1 - Work Items' /&gt;">
-          <ui:BrowserScope.Body>
-            <ActivityAction x:TypeArguments="x:Object">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
-              </ActivityAction.Argument>
-              <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="368,198" sap2010:WorkflowViewState.IdRef="Sequence_3">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:GetFullText DisplayName="Get Full Text 'P'" sap:VirtualizedContainerService.HintSize="330,106" sap2010:WorkflowViewState.IdRef="GetFullText_1" IgnoreHidden="False">
-                  <ui:GetFullText.Target>
-                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="4b64a73b5345fd80281cb89122e635c1" Selector="&lt;webctrl idx='1' tag='P' /&gt;" WaitForReady="COMPLETE" />
-                  </ui:GetFullText.Target>
-                  <ui:GetFullText.Text>
-                    <OutArgument x:TypeArguments="ui:GenericValue">[P]</OutArgument>
-                  </ui:GetFullText.Text>
-                </ui:GetFullText>
-              </Sequence>
-            </ActivityAction>
-          </ui:BrowserScope.Body>
-        </ui:BrowserScope>
-      </Sequence>
-    </FlowStep>
-    <FlowStep>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <av:Point x:Key="ShapeLocation">12,363</av:Point>
-          <av:Size x:Key="ShapeSize">216,72</av:Size>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <Sequence DisplayName="屏幕抓取" sap:VirtualizedContainerService.HintSize="216,72" sap2010:WorkflowViewState.IdRef="Sequence_6">
-        <Sequence.Variables>
-          <Variable x:TypeArguments="ui:GenericValue" Name="P" />
-        </Sequence.Variables>
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="附加浏览器 'ACMESyste Page'" sap2010:WorkflowViewState.IdRef="BrowserScope_3" InformativeScreenshot="95803051d267e5a09f08f40f87801228" Selector="&lt;html app='chrome.exe' title='ACME System 1 - Work Items' /&gt;">
-          <ui:BrowserScope.Body>
-            <ActivityAction x:TypeArguments="x:Object">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
-              </ActivityAction.Argument>
-              <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_5">
-                <ui:GetFullText DisplayName="获取全文本 'P'" sap2010:WorkflowViewState.IdRef="GetFullText_2" IgnoreHidden="False">
-                  <ui:GetFullText.Target>
-                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="1b66e662cb51ba1f7942d2f33c6adf0b" Selector="&lt;webctrl idx='1' tag='P' /&gt;" WaitForReady="COMPLETE" />
-                  </ui:GetFullText.Target>
-                  <ui:GetFullText.Text>
-                    <OutArgument x:TypeArguments="ui:GenericValue">[P]</OutArgument>
-                  </ui:GetFullText.Text>
-                </ui:GetFullText>
-              </Sequence>
-            </ActivityAction>
-          </ui:BrowserScope.Body>
-        </ui:BrowserScope>
-      </Sequence>
     </FlowStep>
     <FlowStep>
       <sap:WorkflowViewStateService.ViewState>
