@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+getOpenID
+</body>
+<script type="text/javascript">
+    window.alert(get_query_string('open_id'));
+function get_query_string(name){
+var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+var r = window.location.search.substr(1).match(reg);
+if(r!=null) {
+    return  unescape(r[2]);
+}else{
+    return null;
+}
+}
+</script>
+</html>
